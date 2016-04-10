@@ -62,8 +62,8 @@ class Hand:
     def __str__(self):
         # return a string representation of a hand
         hand_str = "Hand contains "
-        for i in range(len(self._cards)):
-            hand_str += str(self._cards[i]) + " "
+        for card in self._cards:
+            hand_str += str(card) + ' '
         return hand_str   
 
     def add_card(self, card):
@@ -74,13 +74,13 @@ class Hand:
         # count aces as 1, if the hand has an ace, then add 10 to hand value if it doesn't bust
         # compute the value of the hand, see Blackjack video
         hand_value = 0
-        num_ace = 0
+        has_ace = False
         
         for card in self._cards:
             hand_value += VALUES[card.get_rank()] 
             if card.get_rank() == 'A':
-                num_ace += 1
-        if num_ace == 0:
+                has_ace = True
+        if has_ace == False:
             return hand_value
         else:
             if hand_value + 10 <= 21:
@@ -92,7 +92,7 @@ class Hand:
         # draw a hand on the canvas, use the draw method for cards
         i = 0
         for card in self._cards:
-            card.draw(canvas, (pos[0]+i*CARD_SIZE[0]*1.2, pos[1]))
+            card.draw(canvas, (pos[0] + i * CARD_SIZE[0]*1.2, pos[1]))
             i += 1
         
 # define deck class 
@@ -110,15 +110,14 @@ class Deck:
 
     def deal_card(self):
         # deal a card object from the deck
-        return self._cards.pop(len(self._cards)-1)
+        return self._cards.pop()
     
     def __str__(self):
         # return a string representing the deck
         deck_str = "Deck contains "
-        for i in range(len(self._cards)):
-            deck_str += str(self._cards[i]) + " "
+        for card in self._cards:
+            deck_str += str(card) + ' '
         return deck_str   
-
 
 
 #define event handlers for buttons
@@ -160,8 +159,8 @@ def hit():
             dialog = "New deal?"
             in_play = False
             score -= 1
-
-              
+            
+            
 def stand():
     global outcome, score, in_play, dialog
     global deck, player_hand, dealer_hand
@@ -186,7 +185,6 @@ def stand():
         dialog = "New deal?"
         in_play = False    
     
-
 # draw handler    
 def draw(canvas):
     global outcome, score, dialog, in_play
@@ -207,7 +205,7 @@ def draw(canvas):
     canvas.draw_text(dialog, (200, 400), 25, 'Black', 'sans-serif')
     player_hand.draw(canvas, [70, 420])
 
-
+    
 # initialization frame
 frame = simplegui.create_frame("Blackjack", 600, 600)
 frame.set_canvas_background("Green")
@@ -218,10 +216,6 @@ frame.add_button("Hit",  hit, 200)
 frame.add_button("Stand", stand, 200)
 frame.set_draw_handler(draw)
 
-
 # get things rolling
 deal()
 frame.start()
-
-
-# remember to review the gradic rubric
