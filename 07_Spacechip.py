@@ -102,10 +102,10 @@ class Ship:
         self.radius = info.get_radius()
         
     def turn_counter_clockwise(self):
-        self.angle_vel -= 0.04
+        self.angle_vel -= 0.1
     
     def turn_clockwise(self):
-        self.angle_vel += 0.04
+        self.angle_vel += 0.1
     
     def control_thrusters(self, thrust):
         self.thrust = thrust
