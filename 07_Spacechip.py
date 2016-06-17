@@ -102,10 +102,10 @@ class Ship:
         self.radius = info.get_radius()
         
     def turn_counter_clockwise(self):
-        self.angle_vel -= 0.1
+        self.angle_vel -= 0.05
     
     def turn_clockwise(self):
-        self.angle_vel += 0.1
+        self.angle_vel += 0.05
     
     def control_thrusters(self, thrust):
         self.thrust = thrust
@@ -125,27 +125,27 @@ class Ship:
         
         vel = [self.vel[0] + forward[0] * 10, self.vel[1] + forward[1] * 10]
         
-        a_missile = Sprite(pos, vel, 0, 0, missile_image, missile_info, missile_sound)
+        a_missile = Sprite(pos, vel, self.angle, 0, missile_image, missile_info, missile_sound)
     
     def draw(self,canvas):
         canvas.draw_image(self.image, self.image_center, self.image_size, self.pos, self.image_size, self.angle)
         
         if self.thrust:
-            canvas.draw_image(self.image, (self.image_center[0]+90, self.image_center[1]), self.image_size, self.pos, self.image_size, self.angle)
+            canvas.draw_image(self.image, (self.image_center[0]+self.image_size[0], self.image_center[1]), self.image_size, self.pos, self.image_size, self.angle)
 
     def update(self):
                
         self.pos[0] = (self.pos[0] + self.vel[0]) % WIDTH
         self.pos[1] = (self.pos[1] + self.vel[1]) % HEIGHT
         
-        friction = 0.02
+        friction = 0.01
         self.vel[0] *= (1 - friction)
         self.vel[1] *= (1 - friction)
         
         self.angle += self.angle_vel
-        forward = angle_to_vector(self.angle)
         
-        if self.thrust:          
+        if self.thrust:  
+            forward = angle_to_vector(self.angle)
             self.vel[0] += forward[0] * 0.1
             self.vel[1] += forward[1] * 0.1
      
@@ -175,8 +175,8 @@ class Sprite:
     
     def update(self):
         self.angle += self.angle_vel
-        self.pos[0] += self.vel[0]
-        self.pos[1] += self.vel[1]
+        self.pos[0] = (self.pos[0] + self.vel[0]) % WIDTH
+        self.pos[1] = (self.pos[1] + self.vel[1]) % HEIGHT
        
 
            
